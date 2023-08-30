@@ -1,5 +1,6 @@
 import 'package:chat_app_new_version/helper/heper_function.dart';
 import 'package:chat_app_new_version/screen/login.dart';
+import 'package:chat_app_new_version/screen/profile_screen.dart';
 import 'package:chat_app_new_version/screen/search.dart';
 import 'package:chat_app_new_version/service/auth.dart';
 import 'package:chat_app_new_version/widget/widget.dart';
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                changeScreen(context, const SearchScreen());
+                changeScreenReplacement(context, const SearchScreen());
               },
               icon: const Icon(Icons.search))
         ],
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               onTap: (){
-
+                changeScreenReplacement(context, ProfileScreen(email: email, userName: userName));
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
               leading: const Icon(
@@ -105,9 +106,39 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               onTap: ()async{
-                authService.signOut().whenComplete(() {
-                  changeScreen(context, LoginScreen());
-                });
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Logout"),
+                      content: const Text("Are you sure you want to logout?"),
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            await authService.signOut();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                                (route) => false);
+                          },
+                          icon: const Icon(
+                            Icons.done,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    );
+                  });
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
               leading: const Icon(
