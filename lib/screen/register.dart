@@ -48,7 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Create your account now to chat and explore",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400)),
-                        Image.asset("assets/register.avif"),
+                        Image.asset("assets/register.jpg"),
+                        const SizedBox(height: 10,),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Username",

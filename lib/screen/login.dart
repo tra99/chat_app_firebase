@@ -1,8 +1,14 @@
+import 'package:chat_app_new_version/helper/heper_function.dart';
 import 'package:chat_app_new_version/screen/register.dart';
+import 'package:chat_app_new_version/service/auth.dart';
+import 'package:chat_app_new_version/service/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/widget.dart';
+import 'homepage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,13 +21,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
+  bool _isLoading=false;
+  AuthService authService=AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Theme.of(context).primaryColor,
       // ),
-      body: SingleChildScrollView(
+      body:_isLoading ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)):
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
           child: Form(
@@ -142,5 +151,30 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  login() {}
+  login() async{
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      await authService
+          .loginWithUserNameandPassword(email, password)
+          .then((value) async {
+        if (value == true) {
+          QuerySnapshot snapshot= await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).gettingUserData(email);
+          // saving the value to shared references
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(
+            snapshot.docs[0]['username']
+          );
+          changeScreenReplacement(context, const HomeScreen());
+        } else {
+          showSnackbar(context, Colors.red, value);
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
+    }
+  }
 }
