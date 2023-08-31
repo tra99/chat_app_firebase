@@ -21,14 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String userName = "";
   String email = "";
   Stream? group;
-  bool _isLoading=false;
-  String groupName="";
+  bool _isLoading = false;
+  String groupName = "";
 
-  String getId(String res){
-    return res.substring(0,res.indexOf("_"));
+  String getId(String res) {
+    return res.substring(0, res.indexOf("_"));
   }
-  String getName(String res){
-    return res.substring(res.indexOf("_")+1);
+
+  String getName(String res) {
+    return res.substring(res.indexOf("_") + 1);
   }
 
   @override
@@ -57,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
   }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,77 +198,94 @@ class _HomeScreenState extends State<HomeScreen> {
 
   popUpDialog(BuildContext context) {
     showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return StatefulBuilder(
-            builder: ((context,setState){
-            return AlertDialog(
-              title: const Text(
-                "Create a group",style: TextStyle(color: Color.fromARGB(255, 244, 146, 240),fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _isLoading==true? Center(child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                  ),): TextField(
-                    onChanged: (value){
-                      setState(() {
-                        groupName=value;
-                      });
+            builder: ((context, setState) {
+              return AlertDialog(
+                title: const Text(
+                  "Create a group",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 244, 146, 240),
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _isLoading == true
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          )
+                        : TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                groupName = value;
+                              });
+                            },
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 244, 146, 240)),
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                          ),
+                  ],
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
-                    style: const TextStyle(color: Color.fromARGB(255, 244, 146, 240)),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.red,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      )
-                    ),
+                    child: const Text("Cancel"),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (groupName != "") {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        DatabaseService(
+                                uid: FirebaseAuth.instance.currentUser!.uid)
+                            .createGroup(
+                                userName,
+                                FirebaseAuth.instance.currentUser!.uid,
+                                groupName)
+                            .whenComplete(() {
+                          _isLoading = false;
+                        });
+                        Navigator.of(context).pop();
+                        showSnackbar(context, Colors.green,
+                            "Group created seccessfully.");
+                      }
+                    },
+                    child: const Text("Create"),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor),
                   ),
                 ],
-              ),
-              actions: [
-                ElevatedButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: const Text("Cancel"),style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor
-                ),),
-                ElevatedButton(onPressed: ()async{
-                  if(groupName!=""){
-                    setState(() {
-                      _isLoading=true;
-                    });
-                    DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).createGroup(userName, FirebaseAuth.instance.currentUser!.uid, groupName).whenComplete(() {
-                      _isLoading=false;
-                    });
-                    Navigator.of(context).pop();
-                    showSnackbar(context, Colors.green, "Group created seccessfully.");
-                  }
-                }, child: const Text("Create"),style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor
-                ),),
-              ],
-              );}
-            ),
+              );
+            }),
           );
-        }
-        );
+        });
   }
 
   groupList() {
@@ -280,8 +297,13 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.data["groups"].length != 0) {
                 return ListView.builder(
                   itemCount: snapshot.data["groups"].length,
-                  itemBuilder: (context,index){
-                    return GroupWidget(groupId: getId(snapshot.data["groups"][index]), groupName: getName(snapshot.data["groups"][index]), userName: snapshot.data["username"]);
+                  itemBuilder: (context, index) {
+                    int reverseIndex=snapshot.data["groups"].length-index-1;
+                    return GroupWidget(
+                      groupId: getId(snapshot.data["groups"][reverseIndex]),
+                      groupName: getName(snapshot.data["groups"][reverseIndex]),
+                      userName: snapshot.data["username"],
+                    );
                   },
                 );
               }
@@ -319,7 +341,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const Text(
             "You haven't joined any group yet, tap the icon to create a group or search group to join!",
-             style: TextStyle(color: Color.fromARGB(255, 244, 146, 240),fontSize: 16,fontWeight: FontWeight.w500),
+            style: TextStyle(
+                color: Color.fromARGB(255, 244, 146, 240),
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
             textAlign: TextAlign.center,
           )
         ],

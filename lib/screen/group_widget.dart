@@ -1,4 +1,7 @@
+import 'package:chat_app_new_version/widget/widget.dart';
 import 'package:flutter/material.dart';
+
+import 'chat_screen.dart';
 
 class GroupWidget extends StatefulWidget {
   final String userName;
@@ -18,9 +21,30 @@ class GroupWidget extends StatefulWidget {
 class _GroupWidgetState extends State<GroupWidget> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(widget.groupId),
-      subtitle: Text(widget.groupName),
+    return GestureDetector(
+      onTap: (){
+        changeScreen(context, ChatScreen(
+          groupId: widget.groupId,groupName: widget.groupName,userName: widget.userName,
+        ));
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+        child: ListTile(
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Text(
+              widget.groupName.substring(0,1).toUpperCase(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,fontWeight: FontWeight.w400
+              ),
+            ),
+          ),
+          title: Text(widget.groupName,style: const TextStyle(fontWeight: FontWeight.bold),),
+          subtitle: const Text("Tab here to join conversation",style: TextStyle(fontSize: 14),),
+        ),
+      ),
     );
   }
 }
