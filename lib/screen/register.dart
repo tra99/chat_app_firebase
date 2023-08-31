@@ -39,15 +39,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         const Text(
-                          "Groupie",
+                          "PINK Chat",
                           style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                              fontSize: 40, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 244, 146, 240)),
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                            "Create your account now to chat and explore",
+                            "Want to have pink life? Start using our app now!",
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400)),
+                                fontSize: 15, fontWeight: FontWeight.w400,color: Color.fromARGB(255, 244, 146, 240))),
                         Image.asset("assets/register.jpg"),
                         const SizedBox(height: 10,),
                         TextFormField(
@@ -144,12 +144,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         Text.rich(TextSpan(
                           text: "Already have an account? ",
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
+                              color: Color.fromARGB(255, 244, 146, 240), fontSize: 14),
                           children: <TextSpan>[
                             TextSpan(
                                 text: "Login now",
                                 style: const TextStyle(
-                                    color: Colors.black,
+                                    color: Color.fromARGB(255, 244, 146, 240),
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

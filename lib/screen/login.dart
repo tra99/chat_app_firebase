@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextFormField(
                     decoration: textInputDecoration.copyWith(
-                      hintText: "Email",
+                      labelText: "Email",
                       prefixIcon: Icon(
                         Icons.email,
                         color: Theme.of(context).primaryColor,
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     obscureText: true,
                     decoration: textInputDecoration.copyWith(
-                        hintText: "Password",
+                        labelText: "Password",
                         prefixIcon: Icon(
                           Icons.lock,
                           color: Theme.of(context).primaryColor,

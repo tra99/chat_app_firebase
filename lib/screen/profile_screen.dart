@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: <Widget>[
           Icon(
             Icons.account_circle,
-            size: 150,
+            size: 120,
             color: Colors.grey[700],
           ),
           const SizedBox(
@@ -138,18 +138,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Full Name", style: TextStyle(fontSize: 17)),
-                Text(widget.userName, style: const TextStyle(fontSize: 17)),
+                const Text("Username", style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 244, 146, 240), )),
+                Text(widget.userName, style: const TextStyle(fontSize: 17,color: Color.fromARGB(255, 244, 146, 240), )),
               ],
             ),
             const Divider(
-              height: 20,
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.email, style: const TextStyle(fontSize: 17)),
+                const Text("Email", style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 244, 146, 240), )),
+                Text(widget.email, style: const TextStyle(fontSize: 17,color: Color.fromARGB(255, 244, 146, 240), )),
               ],
             ),
           ],
