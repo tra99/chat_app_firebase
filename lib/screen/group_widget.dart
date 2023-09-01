@@ -23,7 +23,7 @@ class _GroupWidgetState extends State<GroupWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        changeScreen(context, ChatScreen(
+        changeScreen(context, ChatPage(
           groupId: widget.groupId,groupName: widget.groupName,userName: widget.userName,
         ));
       },

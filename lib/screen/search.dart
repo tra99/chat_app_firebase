@@ -1,4 +1,5 @@
 import 'package:chat_app_new_version/helper/heper_function.dart';
+import 'package:chat_app_new_version/screen/chat_screen.dart';
 import 'package:chat_app_new_version/screen/homepage.dart';
 import 'package:chat_app_new_version/service/database_service.dart';
 import 'package:chat_app_new_version/widget/widget.dart';
@@ -20,6 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool hasUserSearch=false;
   String userName="";
   User? user;
+  bool isJoined=false;
 
   @override
   void initState() {
@@ -34,6 +36,10 @@ class _SearchScreenState extends State<SearchScreen> {
       });
     });
     user =FirebaseAuth.instance.currentUser;
+  }
+  
+  String getName(String res) {
+    return res.substring(res.indexOf("_") + 1);
   }
 
   @override
@@ -86,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10), // Add spacing between TextField and Icon
+                const SizedBox(width: 10), 
                 GestureDetector(
                   onTap: () {
                     initiateSearchMethod();
@@ -142,6 +148,65 @@ class _SearchScreenState extends State<SearchScreen> {
     ):Container();
   }
   Widget groupTile(String userName,String groupId,String groupName,String admin){
-    return Text("Hello");
+    // function to check whether user already exists in group
+    joinedOrNot(userName, groupId, groupName, admin);
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Text(
+          groupName.substring(0,1).toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white
+            ),
+        ),
+      ),
+      title: Text(groupName,style: const TextStyle(fontWeight: FontWeight.bold),),
+      subtitle: Text('Admin: ${getName(admin)}'),
+      trailing: InkWell(
+        onTap: () async{
+          await DatabaseService(uid: user!.uid).togglingGroupJoin(groupId, userName, groupName);
+          if(isJoined){
+            setState(() {
+              isJoined=!isJoined;
+            });
+            showSnackbar(context, Colors.green, "You have joined the group $groupName");
+            Future.delayed(const Duration(seconds: 2),(){
+              changeScreen(context, ChatPage(groupId: groupId, groupName: groupName, userName: userName));
+            });
+          }else{
+            setState(() {
+              isJoined=!isJoined;
+              showSnackbar(context, Colors.red, "$userName left the group");
+            });
+          }
+        },
+        child: isJoined?Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(255, 193, 46, 36),
+            border: Border.all(color: Colors.white,width: 1)
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+          child: const Text('Joined',style: TextStyle(color: Colors.white),),
+        )
+        :Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).primaryColor
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+          child: const Text('Join',style: TextStyle(color: Colors.white),),
+        )
+      ),
+    );
+  }
+  joinedOrNot(String userName,String groupId,String groupName,String admin)async{
+    await DatabaseService(uid: user!.uid).isUserJoined(groupName, groupId, userName).then((value){
+      setState(() {
+        isJoined=value;
+      });
+    });
   }
 }

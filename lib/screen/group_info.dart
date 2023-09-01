@@ -1,4 +1,6 @@
+import 'package:chat_app_new_version/screen/homepage.dart';
 import 'package:chat_app_new_version/service/database_service.dart';
+import 'package:chat_app_new_version/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +55,47 @@ class _GroupInfoState extends State<GroupInfo> {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text("Group Info"),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.exit_to_app))
+          IconButton(onPressed: () {
+             showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Exit"),
+                        content:
+                            const Text("Are you sure you want to exit the group? "),
+                        actions: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              DatabaseService(
+                                      uid: FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                  .togglingGroupJoin(
+                                      widget.groupId,
+                                      getName(widget.adminName),
+                                      widget.groupName)
+                                  .whenComplete(() {
+                                changeScreenReplacement(context, const HomeScreen());
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.done,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+          }, icon: const Icon(Icons.exit_to_app))
         ],
       ),
       body: Container(

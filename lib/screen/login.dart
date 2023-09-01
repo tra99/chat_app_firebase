@@ -26,9 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).primaryColor,
-      // ),
       body:_isLoading ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)):
       SingleChildScrollView(
         child: Padding(
@@ -40,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    "GIC Chat",
+                    "PINK Chat",
                     style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
