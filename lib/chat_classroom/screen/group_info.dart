@@ -1,8 +1,10 @@
-import 'package:chat_app_new_version/screen/homepage.dart';
-import 'package:chat_app_new_version/service/database_service.dart';
-import 'package:chat_app_new_version/widget/widget.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../service/database_service.dart';
+import '../widget/widget.dart';
+import 'homescreen_chat.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
@@ -84,7 +86,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                       getName(widget.adminName),
                                       widget.groupName)
                                   .whenComplete(() {
-                                changeScreenReplacement(context, const HomeScreen());
+                                changeScreenReplacement(context, const HomeScreenChat());
                               });
                             },
                             icon: const Icon(

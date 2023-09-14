@@ -1,5 +1,5 @@
-import 'package:chat_app_new_version/screen/homepage.dart';
-import 'package:chat_app_new_version/screen/login.dart';
+
+import 'package:chat_app_new_version/chat_classroom/screen/login.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Want to have pink life? Start using our app now!",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400,color: Color.fromARGB(255, 244, 146, 240))),
-                        Image.asset("assets/register.jpg"),
+                        Image.asset("assets/icons/register.jpg"),
                         const SizedBox(height: 10,),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
@@ -177,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserEmailSF(email);
           await HelperFunction.saveUserNameSF(username);
-          changeScreenReplacement(context, const HomeScreen());
+          changeScreenReplacement(context, const LoginScreen());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {

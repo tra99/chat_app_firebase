@@ -1,22 +1,24 @@
-import 'package:chat_app_new_version/helper/heper_function.dart';
-import 'package:chat_app_new_version/screen/group_widget.dart';
-import 'package:chat_app_new_version/screen/login.dart';
-import 'package:chat_app_new_version/screen/profile_screen.dart';
-import 'package:chat_app_new_version/screen/search.dart';
-import 'package:chat_app_new_version/service/auth.dart';
-import 'package:chat_app_new_version/service/database_service.dart';
-import 'package:chat_app_new_version/widget/widget.dart';
+
+import 'package:chat_app_new_version/chat_classroom/screen/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+import '../helper/heper_function.dart';
+import '../service/auth.dart';
+import '../service/database_service.dart';
+import '../widget/widget.dart';
+import 'group_widget.dart';
+import 'homescreen_app.dart';
+
+
+class HomeScreenChat extends StatefulWidget {
+  const HomeScreenChat({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenChat> createState() => _HomeScreenChatState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenChatState extends State<HomeScreenChat> {
   AuthService authService = AuthService();
   String userName = "";
   String email = "";
@@ -69,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               icon: const Icon(Icons.search))
         ],
+      leading: IconButton(onPressed: (){changeScreen(context, const HomeScreen());}, icon: const Icon(Icons.arrow_back)),
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
@@ -78,120 +81,39 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Icon(
-                Icons.account_circle,
-                size: 120,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Divider(
-              height: 2,
-            ),
-            ListTile(
-              onTap: () {},
-              selectedColor: Theme.of(context).primaryColor,
-              selected: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Groups",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                changeScreenReplacement(
-                    context, ProfileScreen(email: email, userName: userName));
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Profile",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            ListTile(
-              onTap: () async {
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Logout"),
-                        content: const Text("Are you sure you want to logout?"),
-                        actions: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await authService.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()),
-                                  (route) => false);
-                            },
-                            icon: const Icon(
-                              Icons.done,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text(
-                "Log Out",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        ),
-      ),
+      
       body: groupList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          popUpDialog(context);
-        },
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
-        ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: FloatingActionButton(
+              onPressed: () {
+                changeScreen(context, const HomeScreen());
+              },
+              elevation: 0,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              popUpDialog(context);
+            },
+            elevation: 0,
+            backgroundColor: Theme.of(context).primaryColor,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ],
       ),
     );
   }

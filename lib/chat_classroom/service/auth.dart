@@ -1,6 +1,8 @@
-import 'package:chat_app_new_version/helper/heper_function.dart';
-import 'package:chat_app_new_version/service/database_service.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../helper/heper_function.dart';
+import 'database_service.dart';
 
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

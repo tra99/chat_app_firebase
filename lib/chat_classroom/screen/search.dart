@@ -1,11 +1,13 @@
-import 'package:chat_app_new_version/helper/heper_function.dart';
-import 'package:chat_app_new_version/screen/chat_screen.dart';
-import 'package:chat_app_new_version/screen/homepage.dart';
-import 'package:chat_app_new_version/service/database_service.dart';
-import 'package:chat_app_new_version/widget/widget.dart';
+
+import 'package:chat_app_new_version/chat_classroom/screen/chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../helper/heper_function.dart';
+import '../service/database_service.dart';
+import '../widget/widget.dart';
+import 'homescreen_chat.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -59,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            changeScreen(context, const HomeScreen());
+            changeScreen(context, const HomeScreenChat());
           },
           icon: const Icon(Icons.arrow_back),
         ),

@@ -1,14 +1,14 @@
-import 'package:chat_app_new_version/helper/heper_function.dart';
-import 'package:chat_app_new_version/screen/register.dart';
-import 'package:chat_app_new_version/service/auth.dart';
-import 'package:chat_app_new_version/service/database_service.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import '../helper/heper_function.dart';
+import '../service/auth.dart';
+import '../service/database_service.dart';
 import '../widget/widget.dart';
-import 'homepage.dart';
+import 'homescreen_app.dart';
+import 'register.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,7 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
   bool _isLoading=false;
+  bool _isSignIn=false;
   AuthService authService=AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Image.asset("assets/talking.webp"),
+                  Image.asset("assets/icons/talking.webp"),
                   const SizedBox(
                     height: 50,
                   ),
@@ -164,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await HelperFunction.saveUserNameSF(
             snapshot.docs[0]['username']
           );
-          changeScreenReplacement(context, const HomeScreen());
+          changeScreenReplacement(context, _isSignIn ? const LoginScreen():const HomeScreen(),);
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {

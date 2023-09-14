@@ -64,7 +64,8 @@ class _MessageTileState extends State<MessageTile> {
             ),
             Text(widget.message,
                 textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 16, color: Colors.white))
+                style: const TextStyle(fontSize: 16, color: Colors.white)),
+                
           ],
         ),
       ),

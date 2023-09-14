@@ -1,9 +1,12 @@
-import 'package:chat_app_new_version/helper/heper_function.dart';
-import 'package:chat_app_new_version/screen/homepage.dart';
-import 'package:chat_app_new_version/screen/login.dart';
-import 'package:chat_app_new_version/shared/constant.dart';
+import 'package:chat_app_new_version/chatgpt/providers/chat_provider.dart';
+import 'package:chat_app_new_version/chatgpt/providers/models_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'chat_classroom/shared/constant.dart';
+import 'chat_classroom/splashscreen/splashscreen.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,33 +23,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  bool _isSignIn=false;
-
-  @override
-  void initState(){
-    super.initState();
-    getUserLoggedInStatus();
-  }
-
-  getUserLoggedInStatus() async{
-    await HelperFunction.getUserLoggedInStatus().then((value){
-      if(value!=null){
-        setState(() {
-          _isSignIn=value;
-        });
-      }
-    });
-  }
-
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Constants().primaryColor,
-        scaffoldBackgroundColor: Colors.white
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=>ModelsProvider()),
+        ChangeNotifierProvider(create: (_)=>ChatProvider())
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: Constants().primaryColor,
+          scaffoldBackgroundColor: Colors.white
+        ),
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        home: const SplashPage()
+        
       ),
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: _isSignIn ? const HomeScreen():const LoginScreen(),
     );
   }
 }

@@ -1,6 +1,7 @@
-import 'package:chat_app_new_version/widget/widget.dart';
+
 import 'package:flutter/material.dart';
 
+import '../widget/widget.dart';
 import 'chat_screen.dart';
 
 class GroupWidget extends StatefulWidget {

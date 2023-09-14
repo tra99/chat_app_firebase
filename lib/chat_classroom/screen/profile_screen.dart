@@ -1,9 +1,11 @@
-import 'package:chat_app_new_version/screen/homepage.dart';
-import 'package:chat_app_new_version/screen/login.dart';
-import 'package:chat_app_new_version/widget/widget.dart';
+
+import 'package:chat_app_new_version/chat_classroom/screen/homescreen_app.dart';
+import 'package:chat_app_new_version/chat_classroom/screen/login.dart';
 import 'package:flutter/material.dart';
 
 import '../service/auth.dart';
+import '../widget/widget.dart';
+import 'homescreen_chat.dart';
 
 class ProfileScreen extends StatefulWidget {
   String userName;
@@ -58,6 +60,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            leading: const Icon(Icons.home_outlined),
+            title: const Text(
+              "Home",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              changeScreen(context, const HomeScreenChat());
+            },
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.group),
             title: const Text(
               "Groups",
@@ -70,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             selectedColor: Theme.of(context).primaryColor,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            leading: const Icon(Icons.group),
+            leading: const Icon(Icons.person),
             title: const Text(
               "Profile",
               style: TextStyle(color: Colors.black),
