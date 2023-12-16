@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'chat_classroom/screen/homescreen_chat.dart';
 import 'chat_classroom/shared/constant.dart';
 import 'chat_classroom/splashscreen/splashscreen.dart';
 
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
         ),
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        home: const SplashPage()
+        home:  HomeScreenChat()
         
       ),
     );
